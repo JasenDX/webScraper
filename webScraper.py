@@ -23,22 +23,21 @@ def runPrices(website, item):
 	#ecommerce websites
 	ebay = "https://www.ebay.com/"
 	amazon = "https://www.amazon.com/ref=nav_logo"
-	facebookMarketplace = "https://www.facebook.com/marketplace/"
+
 
 	r = requests.get(website)
 	soup = BeautifulSoup(r.content, 'html5lib')
 
 	if(r.status_code == 200): #checks if website is up
 
-		if(website == ebay): #ebay
-			print ("ebay")
-			s = soup.find('div', class_='entry-content') 
+		if(website == "all"): #all
+			print("Both')
 			
 
-		if(website == amazon): #amazon
+		if(website == "ebay"): #ebay
 			print ("ama")
 
-		if(website == facebookMarketplace): #facebook marketplace
+		if(website == "ama"): #ama
 			print ("fMarket")
 	else:
 		print("ERROR - could not connect to website")
@@ -66,6 +65,14 @@ def runStock(item):
 
 	else:
 		print("ERROR - could not connect to website")	
+
+def runEbay():
+	print("Ebay")
+	ebay = "https://www.ebay.com/"
+
+
+def runAMA():
+	print("AMA")
 
 
 #organizes the variables based on output type and website type and sends them either as a string or a list
