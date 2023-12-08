@@ -36,22 +36,11 @@ def search():
 def writeToOutput():
     if(tracker == 1):
         output.insert(1, f"Price: {writeToGui('ecommerce')[0]}")
-        output.insert(2, f"Shipping Cost: {writeToGui('ecommerce')[1]}")
-        output.insert(3, f"Discounts: {writeToGui('ecommerce')[2]}")
-        output.insert(4, f"Shipping From: {writeToGui('ecommerce')[3]}")
-        output.insert(5, f"Shipping Time: {writeToGui('ecommerce')[4]}")
 
         output.place_configure(relx = 0.2, rely = 0.2)
 
     elif(tracker == 2):
         output.insert(1, f"Price: {writeToGui('stocks')[0]}")
-        output.insert(2, f"Opening Price: {writeToGui('stocks')[1]}")
-        output.insert(3, f"Previous Close: {writeToGui('stocks')[2]}")
-        output.insert(4, f"Volume: {writeToGui('stocks')[3]}")
-        output.insert(5, f"Market Cap: {writeToGui('stocks')[4]}")
-        output.insert(6, f"Beta: {writeToGui('stocks')[5]}")
-        output.insert(7, f"P/E Ratio: {writeToGui('stocks')[6]}")
-        output.insert(8, f"EPS: {writeToGui('stocks')[7]}")
 
         output.place_configure(relx = 0.2, rely = 0.2)
 
