@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request
-from webScrapper import *
+from websiteWebScrapper import *
 
 app = Flask(__name__)
 product = ""
