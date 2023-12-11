@@ -1,40 +1,41 @@
-
 from flask import Flask, redirect, url_for, render_template, request
-from webScraper import *
+from websiteWebScrapper import *
 
 app = Flask(__name__)
 product = ""
 webType = ""
 sOrE = ""
+gui = "gui"
 
 
     # Defining the home page of our site
-@app.route("/", methods=["POST", "GET"])
+@app.route("/")
 def home():
-    if request.method == "POST":
-	product = request.form["stockOrProduct"]
-        return redirect(url_for("result"))
-    else:
-	    return render_template("website.html")
+    return render_template("website.html")
     
     
     
 
-@app.route("/result")
-def result():
-    if sOrE == "stock":
-        runStock(product)
-    else:
-        runPrices("all", product)
-    return f"<p>Info {getVars(webType, gui)}</p>"
+@app.route("/resultStock", methods=["POST", "GET"])
+def resultStock():
 
-@app.route("/<name>")
-def user(name):
-    return f"Hello {name}!"
+    output = request.form.to_dict()
+    print(output)
+    name = output["name"]
+    final = runStock(name)
 
-@app.route("/admin")
-def admin():
-	return redirect(url_for("home"))
+
+    return render_template('website.html', name = name, final = final)
+
+@app.route("/resultEcommerce", methods=["POST", "GET"])
+def resultEcommerce():
+    output = request.form.to_dict()
+    print(output)
+    name = output["name"]
+    final = runPrices("all", name)
+
+    return render_template('website.html', name = name, final = final)
+
 
 
 def getProduct():

@@ -1,29 +1,53 @@
 <HTML>
-  <head>
+<head>
     <title>Warren Hills Comptuer Science Web Scraper</title>
-  </head>
-  <body>  
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/index.css">
+</head>
+<body>
     <h1>Web Scraper</h1>
     <!--<embed type="text/html" src="report.txt" width="500" height="200">-->
-    <p>Enter your Product or Stock name:</p>
-    <input type="text" name="stockOrProduct">
-                <form action="#" method="post>
-                    <p><input type="submit" value="Search Stock" /></p>
-                    <p><input type="submit" value="Search Product" /></p>
-                </form>
-    <button onclick="runPythonScript()">Run Python Script</button>
-      <script>
-    function runPythonScript() 
-      {
-        // Get the path to the Python script.
-        var pythonScriptPath = "C:\Users\CSStudent\Downloads\test.py";
-        // Run the Python script.
-        subprocess.run(["python", pythonScriptPath]);
-      }
-      </script>
-  </body>
+
+
+    <form class="grid" action="/resultStock" method="POST">
+
+        {% if name %}
+        <center>
+            <h3 style="color: blue;" class="let_space">Results for {{name}}:</h3>
+            <p>{{final}}</p>
+        </center>
+
+        {% endif %}
+
+        <label for="name">Enter you Stock:</label>
+        <input type="text" id="name" name="name">
+
+        <center><input class="file_submit" type="Submit"></center>
+
+    </form>
+
+    <form class="grid" action="/resultEcommerce" method="POST">
+
+        {% if name %}
+        <center>
+            <h3 style="color: blue;" class="let_space">Results for {{name}}:</h3>
+            <p>{{final}}</p>
+        </center>
+
+        {% endif %}
+
+        <label for="name">Enter you Product:</label>
+        <input type="text" id="name" name="name">
+
+        <center><input class="file_submit" type="Submit"></center>
+
+    </form>
+
+
+
+</body>
 </HTML>
 <!--https://www.hostinger.com/tutorials/add-javascript-to-html#:~:text=The%20first%20way%20to%20add,between%20the%20tags
   https://medium.com/@brajagopal.tripathi/how-to-run-a-python-script-from-an-html-button-17058bf5dbe5
-https://blog.pythonanywhere.com/169/
-https://www.youtube.com/watch?v=0meTbQQaosU-->
+https://blog.pythonanywhere.com/169/-->
