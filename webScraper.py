@@ -5,10 +5,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
 #ecommerce var
-ePrice = 0.0
+ePrice = ""
 	
 #stock var
-sPrice = 0.0
+sPrice = ""
 
 #open website, finds price, returns relevant data
 def runPrices(website, item):
@@ -116,10 +116,10 @@ def getVars(webType, outputType):
 	elif(outputType == "gui"):
 		
 		if(webType == "ecommerce"):
-			return [ePrice]
+			return ePrice
 			
 		elif(outputType == "stock"):
-			return [sPrice]
+			return sPrice
 
 #print(runStock("AMZN"))
 #print(runEbay("ssd"))

@@ -1,6 +1,6 @@
 from tkinter import *
 from main import writeToGui
-from webScrapper import *
+from webScraper import *
 
 m = Tk() #creates window
 tracker = 0 #keeps track of whether eccomerce or stocks
@@ -25,24 +25,28 @@ def selS():
 
     tacker = 2
 
-def search():
-    if(tracker == 1):
-        runPrices("all", eInput)
-
-    elif(tracker == 2):
-        runStocks(sInput)
-
 #checks tracker, then unwraps the corresponding list (either ecomerce or stock) from webScrapper.py, and then assigns the data to output
 def writeToOutput():
+    print("output")
     if(tracker == 1):
-        output.insert(1, f"Price: {writeToGui('ecommerce')[0]}")
+        output.insert(f"Price: {getVars('ecomerce', 'gui')}")
 
         output.place_configure(relx = 0.2, rely = 0.2)
 
     elif(tracker == 2):
-        output.insert(1, f"Price: {writeToGui('stocks')[0]}")
+        output.insert(1, f"Price: {getVars('stocs','gui')}")
 
         output.place_configure(relx = 0.2, rely = 0.2)
+
+def search():
+    print("search")
+    if(tracker == 1):
+        runPrices("ama", (eInput.get()))
+        writeToOutput()
+
+    elif(tracker == 2):
+        runStocks(sInput.get())
+        writeToOutput()
 
 m.title("Web Scraper")
 m.geometry("1000x1000")
@@ -72,6 +76,5 @@ Label(m, text = "OUTPUT", font = ("Impact", 16), fg = "white", bg = "gray20").pl
 output = Listbox(m, bg = "gray20", fg = "white", font = ("Impact", 16), width = 60)
 
 output.place(relx = 0.2, rely = 0.27)
-
 
 m.mainloop() 

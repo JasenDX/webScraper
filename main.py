@@ -1,5 +1,5 @@
 from datetime import datetime
-from webScrapper import getVars
+from webScraper import getVars
 
 def saveToDisk(webType):
 	if(webType == "ecommerce"):
