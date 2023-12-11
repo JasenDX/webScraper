@@ -55,7 +55,7 @@ def runStock(item):
 	else:
 		return "ERROR - could not connect to website"
 
-	return getVarsStock(sPrice, open, pClose, volume, marketCap, beta, PERatio, EPS)
+	return getVarsStock(sPrice)
 
 
 def runEbay(item):
