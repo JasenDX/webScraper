@@ -1,9 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import html5lib
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
 #ecommerce vars
-ePrice = 0.0
+ePrice = ""
 shippingCost = 0.0
 discounts = 0.0
 shippingFrom = ""
@@ -21,16 +24,7 @@ EPS = 0.0
 
 #open website, finds price, returns relevant data
 def runPrices(website, item):
-	#ecommerce websites
-	ebay = "https://www.ebay.com/"
-	amazon = "https://www.amazon.com/ref=nav_logo"
-
-	r = requests.get(website)
-	soup = BeautifulSoup(r.content, 'html5lib')
-
-	if(r.status_code == 200): #checks if website is up
-
-		if(website == "all"): #all
+		if(website == "all"): #runs both ebay and amazon and returns average price
 			avgPrice = runEbay(item) + runAMA(item) 
 			ePrice = (avgPrice / 2)
 		
@@ -39,11 +33,8 @@ def runPrices(website, item):
 
 		if(website == "ama"): #ama
 			ePrice = runAMA(item)
-
-		getVars(ePrice, shippingCost, discounts, shippingFrom, shippingTime)
-
-	else:
-		print("ERROR - could not connect to website")
+		print(ePrice + " Test")
+		return getVars(ePrice, shippingCost, discounts, shippingFrom, shippingTime)
 
 def runStock(item):
 	stocks = (f"https://www.marketwatch.com/investing/stock/{item}?mod=search_symbol") #stock website
@@ -53,22 +44,18 @@ def runStock(item):
 		#soup = BeautifulSoup(r.content, 'html.parser')
 		soup = BeautifulSoup(r.content, 'html5lib')
 
-		priceElement = soup.find("Open")#soup.find('div', {'class': 'intraday__data'})
-
-
-		openElement = soup.find('td', {'class': 'table__cell u-semi'})
+		priceElement = soup.find('bg-quote', class_='value')
 
 
 		#sPrice = 10.5
 		sPrice = priceElement.text.strip()
-		open = openElement.text.strip()	
 
 		#print(getVars("stock", "disk"))
 
 	else:
 		return "ERROR - could not connect to website"
 
-	return getVars(sPrice, open, pClose, volume, marketCap, beta, PERatio, EPS)
+	return getVarsStock(sPrice, open, pClose, volume, marketCap, beta, PERatio, EPS)
 
 
 def runEbay(item):
@@ -77,16 +64,40 @@ def runEbay(item):
 
 
 def runAMA(item):
-	print("AMA")
+	ama = "https://www.amazon.com/"
+	price = ""
+
+	driver = webdriver.Chrome()
+	driver.get(ama)
+
+	driver.implicitly_wait(3)
+
+	searchBar = driver.find_element(By.ID, "twotabsearchtextbox")
+	searchBar.clear()
+	searchBar.send_keys(item)
+	searchBar.send_keys(Keys.RETURN)
+
+	driver.implicitly_wait(3)
+
+	firstResultText = driver.find_element(By.CSS_SELECTOR,"a.a-link-normal.s-underline-text.s-underline-link-text.s-link-style.a-text-normal")
+	firstResultLink = firstResultText.get_attribute('href')
+
+	driver.get(firstResultLink)
+
+	driver.implicitly_wait(3)
+
+	priceElementWhole = driver.find_element(By.CLASS_NAME, "a-price-whole")
+	priceElementFraction = driver.find_element(By.CLASS_NAME, "a-price-fraction")
+	price = (f"{priceElementWhole.text}.{priceElementFraction.text}")
+
+	driver.close()
+	print(price)
+	return price
 
 
 #organizes the variables based on output type and website type and sends them either as a string or a list
-def getVars(sPrice, open, pClose, volume, marketCap, beta, PERatio, EPS):
-		return (f"Price: {sPrice}, Open: {open}, Close: {pClose}, Volume: {volume}, Market Cap: {marketCap}, Beta: {beta}, Per Ratio: {PERatio}, EPS: {EPS}")
+def getVarsStock(sPrice):#, open, pClose, volume, marketCap, beta, PERatio, EPS):
+		return (f"Price: {sPrice}")#, Open: {open}, Close: {pClose}, Volume: {volume}, Market Cap: {marketCap}, Beta: {beta}, Per Ratio: {PERatio}, EPS: {EPS}")
 
-def getVars(ePrice, shippingCost, discounts, shippingFrom, shippingTime):
-			return (f"{ePrice}, {shippingCost}, {discounts}, {shippingFrom}, {shippingTime}")
-
-
-def getPrice():
-	return sPrice
+def getVars(ePrice):#, shippingCost, discounts, shippingFrom, shippingTime):
+			return (f"Price: {ePrice}")#, {shippingCost}, {discounts}, {shippingFrom}, {shippingTime}")
