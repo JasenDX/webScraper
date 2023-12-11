@@ -34,7 +34,7 @@ def runPrices(website, item):
 		if(website == "ama"): #ama
 			ePrice = runAMA(item)
 		print(ePrice + " Test")
-		return getVars(ePrice, shippingCost, discounts, shippingFrom, shippingTime)
+		return getVars(ePrice)
 
 def runStock(item):
 	stocks = (f"https://www.marketwatch.com/investing/stock/{item}?mod=search_symbol") #stock website
