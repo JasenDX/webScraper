@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request
-from webScraper import *
+from webScrapper import *
 
 app = Flask(__name__)
 product = ""
@@ -31,10 +31,10 @@ def resultStock():
 def resultEcommerce():
     output = request.form.to_dict()
     print(output)
-    name = output["name"]
-    final = runPrices("all", name)
-
-    return render_template('website.html', name = name, final = final)
+    nameEco = output["name"]
+    finalEco = runPrices("ama", nameEco)
+    print(finalEco)
+    return render_template('website.html', nameEco = nameEco, finalEco = finalEco)
 
 
 
