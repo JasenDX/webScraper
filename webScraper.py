@@ -1,25 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
 #ecommerce var
 ePrice = 0.0
 	
-#stock vars
+#stock var
 sPrice = 0.0
 
 #open website, finds price, returns relevant data
 def runPrices(website, item):
-	#ecommerce websites
-	ebay = "https://www.ebay.com/"
-	amazon = "https://www.amazon.com/ref=nav_logo"
-
-
-	r = requests.get(website)
-	soup = BeautifulSoup(r.content, 'html5lib')
-
 	if(r.status_code == 200): #checks if website is up
 
-		if(website == "all"): #all
+		if(website == "all"): #runs both ebay and amazon and returns average price
 			avgPrice = runEbay(item) + runAMA(item) 
 			ePrice = (avgPrice / 2)
 		
@@ -36,21 +31,76 @@ def runStock(item):
 	r = requests.get(stocks) #gets HTML of website
 
 	if(r.status_code == 200): #checks if website is up
-		soup = BeautifulSoup(r.content, 'html5lib')
-		priceElement = soup.find("Open")
-		soup.find('div', {'class': 'intraday__data'})
-		
+		soup = BeautifulSoup(r.content, 'html.parser')
+        # Find the element containing the stock price
+		priceElement = soup.find('bg-quote', class_='value')
+
+        # Extract the stock price from the element
 		sPrice = priceElement.text.strip()
+
+		return sPrice
+
 	else:
 		print("ERROR - could not connect to website")	
 
 def runEbay(item):
-	print("Ebay")
 	ebay = "https://www.ebay.com/"
+	price = ""
 
+	driver = webdriver.Chrome()
+	driver.get(ebay)
 
+	searchBar = driver.find_element(By.NAME, "_nkw")
+	searchBar.clear()
+	searchBar.send_keys(item)
+	searchBar.send_keys(Keys.RETURN)
+
+	driver.implicitly_wait(3)
+	
+	firstResultText = driver.find_element(By.CSS_SELECTOR, "a.s-item__link")
+	firstResultLink = firstResultText.get_attribute('href')
+
+	print(firstResultLink)
+	
+	driver.get(firstResultLink)
+
+	driver.implicitly_wait(3)
+
+	priceElement = driver.find_element(By.CLASS_NAME, "ux-textspans")
+	price = priceElement.text
+
+	return price
+	
 def runAMA(item):
-	print("AMA")
+	ama = "https://www.amazon.com/"
+	price = ""
+
+	driver = webdriver.Chrome()
+	driver.get(ama)
+
+	driver.implicitly_wait(3)
+
+	searchBar = driver.find_element(By.ID, "twotabsearchtextbox")
+	searchBar.clear()
+	searchBar.send_keys(item)
+	searchBar.send_keys(Keys.RETURN)
+
+	driver.implicitly_wait(3)
+
+	firstResultText = driver.find_element(By.CSS_SELECTOR,"a.a-link-normal.s-underline-text.s-underline-link-text.s-link-style.a-text-normal")
+	firstResultLink = firstResultText.get_attribute('href')
+
+	driver.get(firstResultLink)
+
+	driver.implicitly_wait(3)
+
+	priceElementWhole = driver.find_element(By.CLASS_NAME, "a-price-whole")
+	priceElementFraction = driver.find_element(By.CLASS_NAME, "a-price-fraction")
+	price = (f"{priceElementWhole.text}.{priceElementFraction.text}")
+
+	driver.close()
+
+	return price
 
 
 #organizes the variables based on output type and website type and sends them either as a string or a list
@@ -71,4 +121,6 @@ def getVars(webType, outputType):
 		elif(outputType == "stock"):
 			return [sPrice]
 
-print(runStock("AMZN"))
+#print(runStock("AMZN"))
+#print(runEbay("ssd"))
+#print(runAMA("computer"))
