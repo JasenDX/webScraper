@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from webScrapper import *
+from websiteWebScrapper import *
 
 app = Flask(__name__)
 
