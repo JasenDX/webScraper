@@ -1,12 +1,7 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, render_template, request
 from webScrapper import *
 
 app = Flask(__name__)
-product = ""
-webType = ""
-sOrE = ""
-gui = "gui"
-
 
     # Defining the home page of our site
 @app.route("/")
@@ -31,15 +26,10 @@ def resultStock():
 def resultEcommerce():
     output = request.form.to_dict()
     print(output)
-    nameEco = output["name"]
+    nameEco = output["nameEco"]
     finalEco = runPrices("ama", nameEco)
     print(finalEco)
     return render_template('website.html', nameEco = nameEco, finalEco = finalEco)
-
-
-
-def getProduct():
-    return product
 
 
 
