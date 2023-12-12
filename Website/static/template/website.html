@@ -29,7 +29,7 @@
 
     <form class="grid" action="/resultEcommerce" method="POST">
 
-        {% if name %}
+        {% if nameEco %}
         <center>
             <h3 style="color: blue;" class="let_space">Results for {{nameEco}}:</h3>
             <p>{{finalEco}}</p>
@@ -37,8 +37,8 @@
 
         {% endif %}
 
-        <label for="name">Enter your Product:</label>
-        <input type="text" id="name" name="name">
+        <label for="nameEco">Enter your Product:</label>
+        <input type="text" id="nameEco" name="nameEco">
 
         <center><input class="file_submit" type="Submit"></center>
 
@@ -48,6 +48,3 @@
 
 </body>
 </HTML>
-<!--https://www.hostinger.com/tutorials/add-javascript-to-html#:~:text=The%20first%20way%20to%20add,between%20the%20tags
-  https://medium.com/@brajagopal.tripathi/how-to-run-a-python-script-from-an-html-button-17058bf5dbe5
-https://blog.pythonanywhere.com/169/-->
